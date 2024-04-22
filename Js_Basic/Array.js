@@ -13,8 +13,7 @@ num.push(5);
 console.log(num);
 
 // 끝에 삭제
-num.pop();
-console.log(num);
+bconsole.log(num);
 
 // 앞에 추가
 num.unshift(6);
