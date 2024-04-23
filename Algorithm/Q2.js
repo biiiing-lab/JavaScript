@@ -13,7 +13,7 @@ class Human {
 
 class Developer extends Human {
     constructor(name, age, availableLanguage) {
-        super(name, age);
+        super(name, age); // 부모 상속
         this.availableLanguage = availableLanguage;
     }
     showAvaildableLanguage() {

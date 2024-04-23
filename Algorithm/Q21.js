@@ -1,5 +1,9 @@
 const find = (array, callback) => {
-    // 여기에 작성
+    for(let i = 0; i < array.length; i++) {
+        if(collback(array[i], i)) {
+            return array[i];
+        }
+    }
 };
 
 find([1, 3, 5, 7], (v, i) => {
