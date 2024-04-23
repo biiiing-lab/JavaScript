@@ -7,3 +7,9 @@ const obj = {
         }
     },
 };
+
+let {a, b : {c, d : {e}}} = obj;
+
+console.log(a);
+console.log(c);
+console.log(e);

@@ -1,7 +1,10 @@
 const arr = ['가', '라', '다', '라', '마', '라'];
 
-let a = arr.indexOf('라');
-const newArr = arr.splice(0, '라');
+for(let i = 0; i < arr.length; i++) {
+    if(arr[i] == '라') {
+        arr.splice(i, 1);
+        i--;
+    }
+}
 
-console.log(arr.length);
-console.log(newArr);
+console.log(arr);
