@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어 : <span id="word"></span></div> 
+    <input type="text">
+    <button class="btn">입력</button>
+
+    <script>
+        // drag, drop, scroll, wheel
+        // 오른쪽 마우스 클릭 이벤트
+        const $button = document.querySelector('button');
+        $button.addEventListener('contextmenu', (event) => {
+           // 버튼에 오른쪽 클릭을 했을 때 context menu를 안 뜨게 하는 것
+            event.preventDefault();
+            console.log('우클릭');
+        })
+    </script>
+
+</body>
+</html>

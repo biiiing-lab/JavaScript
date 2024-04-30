@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어 : <span id="word"></span></div> 
+    <input type="text">
+    <button class="btn">입력</button>
+
+    <script>
+
+        const $button = document.querySelector('button');
+
+        // 미리 함수를 선언해야함
+        // const onClickButton = () => {
+        //     console.log("버튼 클릭");
+        // };
+
+        // (행위, 함수), 보통 처리를 함수로 처리하지만 바로 삽입 가능
+        // $button.addEventListener('click', onClickButton);
+        $button.addEventListener('click', () => {
+            console.log("버튼 클릭");
+        });
+
+        // input
+        const onInput = (event) => {
+            console.log("글자 입력", event.target.value); // 입력할 때
+        };
+
+        const $input = document.querySelector('input');
+        $input.addEventListener('input', onInput);
+        $input.removeEventListener('input', onInput); // 행위 삭제
+
+    </script>
+
+</body>
+</html>

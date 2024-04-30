@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어 : <span id="word"></span></div> 
+    <input type="text">
+    <button class="btn">입력</button>
+
+    <script>
+        let start; // 시작 지점
+        window.addEventListener('mousedown', (event) => {
+            start = [event.clientX, event.clientY]; // 시작 지점 값
+        })
+
+        window.addEventListener('mouseup', (event) => {
+
+            const end = [event.clientX, event.clientY]; // 끝 지점 값
+
+            const diffx = end[0] - start[0];
+            const diffy = end[1] - start[1];
+
+            // 이동 절댓값 계산
+            const isUnder45 = Math.abs(diffx) > Math.abs(diffy);
+
+            if(diffx < 0 && isUnder45) {
+                console.log('왼쪽');
+            } else if (diffx > 0 && isUnder45) {
+                console.log('오른쪽');
+            } else if(diffy > 0 && !isUnder45) {
+                console.log('아래쪽');
+            } else if (diffy < 0 && !isUnder45) {
+                console.log('위쪽');
+            }
+        })
+        
+    </script>
+
+</body>
+</html>
