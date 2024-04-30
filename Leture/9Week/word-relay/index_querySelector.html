@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+    <!--
+        selector : html 태그를 가져오게 도와주는 문자열 
+        document object : 브라우저에 열려 있는 html 문서
+    -->
+
+    <!--  특정 줄, 특정 영역에서 필요한 값을 가지고 올 때 span 태그를 사용 -->
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어 : <span id="word"></span></div> 
+
+    <input type="text">
+
+    <!-- class : 그룹 식별자 -->
+    <button class="btn">입력</button>
+    <button class="btn">처리</button>
+    <button class="btn">출력</button>
+
+    <script>
+
+        // 값을 가져옴
+        const $input = document.querySelector('input');
+        console.log($input); 
+
+        // 여러개의 값을 한번에 가져옴, 노드 리스트
+        const $button = document.querySelectorAll('button');
+        console.log($button); 
+
+        // id 영역을 가져올 경우
+        const $order = document.querySelector('#order'); 
+        console.log($order);
+
+        // class 영역을 가져올 경우
+        const $buttons = document.querySelectorAll('.btn');
+        console.log($buttons);
+
+        // 주로 아이디나 클래스로 접근
+        const $span = document.querySelector('div span');
+        console.log($span);
+    </script>
+
+</body>
+</html>
