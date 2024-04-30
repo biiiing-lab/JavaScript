@@ -15,7 +15,11 @@
     <button class="btn">입력</button>
 
     <script>
-
+        const $button = document.createElement('button');
+        $button.classList.add('login');
+        $button.style.fontSize = '15px';
+        $button.textContent = '버튼';
+        document.body.append($button);
     </script>
 
 </body>

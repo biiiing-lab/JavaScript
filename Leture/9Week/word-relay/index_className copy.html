@@ -8,14 +8,16 @@
 <body>
 
     <div><span id="order">1</span>번째 참가자</div>
-
     <div>제시어 : <span id="word"></span></div> 
-
     <input type="text">
     <button class="btn">입력</button>
 
     <script>
-
+        // class로 접근
+        $button = document.querySelector('.btn');
+        $button.className = 'btn1 btn2'; // btn 지우기
+        $button.className = 'btn3 btn4'; // btn1 btn2 지우기
+        console.log($button);
     </script>
 
 </body>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+
+    <div><span id="order">1</span>번째 참가자</div>
+
+    <div>제시어 : <span id="word"></span></div> 
+
+    <input type="text">
+    <button class="btn">입력</button>
+
+    <form action="" method="get" id="form">
+        <input type="text" name="name" id="name" required>
+        <input type="email" name="email" id="email" required>
+        <button name="button" type="submit"> 구독 </button>
+    </form>
+
+    <script>
+    
+        const $form = document.querySelector('#form');
+
+        // form 태그를 배열 속성으로 가져오기
+        console.log($form[0]);
+        console.log($form[1]);
+        console.log($form[2]);
+
+        // form 태그를 name으로 가져오기
+        console.log($form.name);
+        console.log($form.email);
+        console.log($form.button);
+
+    </script>
+
+</body>
+</html>

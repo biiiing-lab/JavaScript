@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+
+    <div><span id="order">1</span>번째 참가자</div>
+
+    <div>제시어 : <span id="word"></span></div> 
+
+    <input type="text">
+    <button class="btn">입력</button>
+
+    <script>
+        const $table = document.createElement('table');
+        document.body.append($table);
+
+        $table.border = 1; // 외곽선
+        
+        // 4행 4열 테이블
+        for(let i = 0; i < 4; i ++) {
+            const $tr = document.createElement('tr');
+            $table.append($tr);
+
+            for(let j = 0; j < 4; j++) {
+                const $td = document.createElement('td');
+                $td.textContent = '칸';
+                $table.append($td);
+            }
+        }
+
+    </script>
+
+</body>
+</html>
