@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var person = {
+            name: 'ush',
+            sayHello: function() {
+                console.log("hello");
+            }
+        }
+
+        console.log(person.name);
+        person.sayHello();
+
+        var now = new Date(); // 객체 생
+
+        console.log(now.getFullYear());
+        console.log(now.getMonth());
+        console.log(now.getDate());
+        console.log(now.getTime());
+
+        var xmas = new Date('2024-12-25');
+        console.log(xmas);
+
+        var ms = new Date(1000); // 70년 1월 1일 기준으로 1000ms 지난 후
+        console.log(ms);
+
+    </script>
+</body>
+</html>
