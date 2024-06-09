@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>가위바위보</title>
+
+    <style>
+        #computer {
+            width: 165px;
+            height: 200px;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="computer"></div>
+    <div>
+        <button id="scissors" class="btn">가위</button>
+        <button id="rock" class="btn">바위</button>
+        <button id="paper" class="btn">보</button>
+    </div>
+
+    <div id="score"></div>
+
+    <script>
+        const $computer = document.querySelector('#computer');
+        const $score = document.querySelector("#score");
+        const $rock = document.querySelector("#rock");
+        const $paper = document.querySelector("#paper");
+        const $scissors = document.querySelector("#scissors");
+        
+        const img_url = './rsp.png';
+
+        $computer.style.background = `url(${img_url}) 0 0`;
+        $computer.style.backgroundSize = 'auto 200px';
+
+        const rpsX  = {
+            scissors : '0', // 가위
+            rock : '-220px', // 바위
+            paper : '-440px', // 보
+        };
+
+        let computerChoice = 'scissors';
+        let userScore = 0;
+        let computerScore = 0;
+        let roundsPlayed = 0;
+
+        const changeComputerHand = () => { // 가위바위보 이미지 바꾸기
+            computerChoice = Object.keys(rpsX)[Math.floor(Math.random() * 3)];
+            
+            $computer.style.background = `url(${img_url}) ${rpsX[computerChoice]} 0`;
+            $computer.style.backgroundSize = 'auto 200px';
+        };
+
+        const calculateResult = (userChoice) => {
+            const myScore = scoreTable[userChoice];
+            const diff = myScore - scoreTable[computerChoice];
+            let message;
+
+            if (diff === 0) {
+                message = "무승부";
+            } else if (diff === 1 || diff === -2) {
+                userScore++;
+                message = "승리";
+            } else {
+                computerScore++;
+                message = "패배";
+            }
+
+            roundsPlayed++;
+
+            if (roundsPlayed < 5) {
+                $score.textContent = `${message} ${userScore} : ${computerScore}`;
+                setTimeout(() => {
+                    intervalId = setInterval(changeComputerHand, 50);
+                    clickable = true;
+                }, 1000);
+            } else {
+                if (userScore > computerScore) {
+                    $score.textContent = `사용자의 승리 ${userScore} : ${computerScore}`;
+                } else if (userScore < computerScore) {
+                    $score.textContent = `컴퓨터의 승리 ${userScore} :  ${computerScore}`;
+                } else {
+                    $score.textContent = `무승부 ${userScore} : ${computerScore}`;
+                }
+                clearInterval(intervalId);
+            }
+        };
+
+        let clickable = true;
+
+        const scoreTable = {
+            scissors: 1,
+            rock: 2,
+            paper: 0,
+        };
+
+        const clickButton = (event) => {
+            if (clickable) {
+                clearInterval(intervalId);
+                clickable = false;
+
+                const userChoice = event.target.textContent.toLowerCase();
+
+                changeComputerHand();
+                calculateResult(userChoice);
+            }
+        };
+
+        let intervalId = setInterval(changeComputerHand, 50);
+
+        $rock.addEventListener('click', clickButton);
+        $scissors.addEventListener('click', clickButton);
+        $paper.addEventListener('click', clickButton);
+
+    </script>
+
+</body>
+</html>
