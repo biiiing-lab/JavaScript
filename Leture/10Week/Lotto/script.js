@@ -2,7 +2,7 @@ var lotto = [];
 
 while(lotto.length < 6) {
 
-    var num = parseInt(Math.random() * 45 + 1);
+    var num = parseInt(Math.random() * 45 + 1); // 45까지의 수를 가지고 옴
 
     if(lotto.indexOf(num) == -1) {
         lotto.push(num);

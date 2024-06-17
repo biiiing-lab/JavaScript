@@ -11,14 +11,18 @@
     </style>
 </head>
 <body>
+
     <h1>자기소개서</h1>
+
+    <!-- 입력을 했을 경우 스크립트 태그 안에 있는 counter 함수가 실행 -->
     <textarea class="form-control" id="jasoseo" rows="3" onkeydown="counter()"></textarea>
     <span id="count">(0/200)</span>
 
     <script>
 
         function counter() {
-            var content = document.getElementById("jasoseo").value;
+
+            var content = document.getElementById("jasoseo").value; // 값 가져오기
 
             if(content.length > 200) {
                 content = content.substring(0, 200); // 200자 이상일 경우 자르기

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지뢰찾기</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+            flex-direction: column;
+            font-family: 'Arial', sans-serif;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-template-rows: repeat(10, 40px);
+            gap: 2px;
+            border: 2px solid #6c757d;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            background-color: #e9ecef;
+            border: 1px solid #6c757d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            border-radius: 5px;
+        }
+        .cell:hover {
+            background-color: #dee2e6;
+            transform: scale(1.05);
+        }
+        .cell.revealed {
+            background-color: #adb5bd;
+            cursor: default;
+            transform: none;
+        }
+        .cell.mine {
+            background-color: #ff6b6b;
+            color: #ffffff;
+        }
+        .cell.flag {
+            background-color: #ffe066;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid"></div>
+
+    <script>
+
+        // 지뢰찾기 판 만들기
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.querySelector('.grid'); // 판 가져오기
+
+            // 총 200개의 판 만들기
+            const width = 10;
+            const mineCount = 20;
+
+            // 셀
+            let cells = [];
+            let isGameOver = false;
+            let minesFound = 0; // 찾은 지뢰 갯수
+
+            // 판 만드는 메서드
+            function createBoard() {
+
+                // 초기 설정
+                cells = [];
+                grid.innerHTML = '';
+                isGameOver = false;
+                minesFound = 0;
+
+                const minesArray = Array(mineCount).fill('mine'); // 지뢰가 아닌 것을 찾은 것
+                const emptyArray = Array(width * width - mineCount).fill('empty'); // 남은 것
+                const gameArray = emptyArray.concat(minesArray);
+                const shuffledArray = gameArray.sort(() => Math.random() - 0.5);
+
+                // 기본값 세팅 및 진행
+                for (let i = 0; i < width * width; i++) {
+                    const cell = document.createElement('div');
+                    cell.setAttribute('id', i);
+                    cell.classList.add('cell');
+
+                    if (shuffledArray[i] === 'mine') {
+                        cell.setAttribute('data-mine', 'true');
+                    } else {
+                        cell.setAttribute('data-mine', 'false');
+                    }
+                    grid.appendChild(cell);
+                    cells.push(cell);
+
+                    // 클릭했을 때
+                    cell.addEventListener('click', () => {
+                        click(cell);
+                    });
+
+                    // 지뢰 예상 플래그 (오른쪽 키)
+                    cell.oncontextmenu = function(e) {
+                        e.preventDefault();
+                        addFlag(cell);
+                    }
+                }
+
+                // 지뢰 설정
+                for (let i = 0; i < cells.length; i++) {
+                    let total = 0;
+                    const isLeftEdge = (i % width === 0);
+                    const isRightEdge = (i % width === width - 1);
+
+                    if (cells[i].getAttribute('data-mine') === 'false') {
+                        if (i > 0 && !isLeftEdge && cells[i - 1].getAttribute('data-mine') === 'true') total++;
+                        if (i > 9 && !isRightEdge && cells[i + 1 - width].getAttribute('data-mine') === 'true') total++;
+                        if (i > 10 && cells[i - width].getAttribute('data-mine') === 'true') total++;
+                        if (i > 11 && !isLeftEdge && cells[i - 1 - width].getAttribute('data-mine') === 'true') total++;
+                        if (i < 98 && !isRightEdge && cells[i + 1].getAttribute('data-mine') === 'true') total++;
+                        if (i < 90 && !isLeftEdge && cells[i - 1 + width].getAttribute('data-mine') === 'true') total++;
+                        if (i < 88 && !isRightEdge && cells[i + 1 + width].getAttribute('data-mine') === 'true') total++;
+                        if (i < 89 && cells[i + width].getAttribute('data-mine') === 'true') total++;
+                        cells[i].setAttribute('data', total);
+                    }
+                }
+            }
+
+            createBoard();
+
+            // 셀에 플래그를 작성할 때
+            function addFlag(cell) {
+                if (isGameOver) return;
+                if (!cell.classList.contains('revealed') && (cell.innerHTML === '' || cell.innerHTML === '🚩')) {
+                    if (cell.innerHTML === '') {
+                        cell.innerHTML = '🚩';
+                        cell.classList.add('flag');
+                        if (cell.getAttribute('data-mine') === 'true') {
+                            minesFound++;
+                        }
+                    } else {
+                        cell.innerHTML = '';
+                        cell.classList.remove('flag');
+                        if (cell.getAttribute('data-mine') === 'true') {
+                            minesFound--;
+                        }
+                    }
+                }
+                checkWin();
+            }
+
+            // 셀에 클릭 했을 경우
+            function click(cell) {
+                let currentId = cell.id;
+                if (isGameOver) return;
+                if (cell.classList.contains('revealed') || cell.innerHTML === '🚩') return;
+                if (cell.getAttribute('data-mine') === 'true') {
+                    gameOver(cell);
+                } else {
+                    let total = cell.getAttribute('data');
+                    if (total != 0) {
+                        cell.classList.add('revealed');
+                        cell.innerHTML = total;
+                        return;
+                    }
+                    checkCell(cell, currentId);
+                }
+                cell.classList.add('revealed');
+            }
+
+            // 클릭된 셀이 비어있는 경우 주변 셀을 자동으로 열어주는 기능
+            function checkCell(cell, currentId) {
+                const isLeftEdge = (currentId % width === 0);
+                const isRightEdge = (currentId % width === width - 1);
+
+                setTimeout(() => {
+                    if (currentId > 0 && !isLeftEdge) {
+                        const newId = cells[parseInt(currentId) - 1].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                    if (currentId > 9 && !isRightEdge) {
+                        const newId = cells[parseInt(currentId) + 1 - width].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                    if (currentId > 10) {
+                        const newId = cells[parseInt(currentId - width)].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                    if (currentId > 11 && !isLeftEdge) {
+                        const newId = cells[parseInt(currentId) - 1 - width].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                    if (currentId < 98 && !isRightEdge) {
+                        const newId = cells[parseInt(currentId) + 1].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                    if (currentId < 90 && !isLeftEdge) {
+                        const newId = cells[parseInt(currentId) - 1 + width].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                    if (currentId < 88 && !isRightEdge) {
+                        const newId = cells[parseInt(currentId) + 1 + width].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                    if (currentId < 89) {
+                        const newId = cells[parseInt(currentId) + width].id;
+                        const newCell = document.getElementById(newId);
+                        click(newCell);
+                    }
+                }, 10);
+            }
+
+            function gameOver(cell) {
+                isGameOver = true;
+                cells.forEach(cell => {
+                    if (cell.getAttribute('data-mine') === 'true') {
+                        cell.classList.add('revealed');
+                        cell.innerHTML = '💣';
+                    }
+                });
+                setTimeout(() => {
+                    if (confirm('게임 오버! 다시 하겠습니까?')) {
+                        createBoard();
+                    }
+                }, 100);
+            }
+
+            function checkWin() {
+                if (minesFound === mineCount) {
+                    isGameOver = true;
+                    setTimeout(() => {
+                        alert('모든 지뢰를 찾았습니다!');
+                        createBoard();
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

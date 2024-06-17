@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>틱택토</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        const { body } = document;
+        const $table = document.createElement('table');
+        const $result = document.createElement('div');
+        const rows = [];
+        let turn = 'O'; // 사용자가 'O'를 선택
+
+        // 승패 진단
+        const checkWinner = (target) => {
+            const rowIndex = target.parentNode.rowIndex;
+            const cellIndex = target.cellIndex;
+            let hasWinner = false;
+
+            if( // 가로줄 검사
+                rows[rowIndex][0].textContent === turn &&
+                rows[rowIndex][1].textContent === turn &&
+                rows[rowIndex][2].textContent === turn 
+            ) {
+                hasWinner = true;
+            } if( // 세로줄 검사
+                rows[0][cellIndex].textContent === turn &&
+                rows[1][cellIndex].textContent === turn &&
+                rows[2][cellIndex].textContent === turn 
+            ) {
+                hasWinner = true;
+            } if( // 대각선 검사
+                rows[0][0].textContent === turn &&
+                rows[1][1].textContent === turn &&
+                rows[2][2].textContent === turn 
+            ) {
+                hasWinner = true;
+            } if(
+                rows[0][2].textContent === turn &&
+                rows[1][1].textContent === turn &&
+                rows[2][0].textContent === turn 
+            ) {
+                hasWinner = true;
+            }
+
+            return hasWinner;
+        };
+
+        // 컴퓨터가 랜덤하게 빈 곳에 'X'를 둠
+        const computerMove = () => {
+            let emptyCells = [];
+            rows.forEach(row => {
+                row.forEach(cell => {
+                    if (cell.textContent === '') {
+                        emptyCells.push(cell);
+                    }
+                });
+            });
+
+            const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            randomCell.textContent = 'X'; // 컴퓨터가 'X'를 선택
+            const hasWinner = checkWinner(randomCell);
+
+            if (hasWinner) {
+                $result.textContent = `${turn}님의 승리`;
+                $table.removeEventListener('click', callback);
+                return;
+            }
+
+            const draw = rows.flat().every((cell) => cell.textContent);
+            if (draw) {
+                $result.textContent = '무승부';
+                return;
+            }
+
+            turn = 'O'; // 다시 사용자 차례로 변경
+        };
+
+       // 사용자가 선택한 후 일정 시간이 지난 후에 컴퓨터가 'X'를 둠
+const delayComputerMove = () => {
+    setTimeout(computerMove, 500); // 1000ms(1초) 딜레이 후에 computerMove 함수 호출
+};
+
+const callback = (event) => {
+    if (event.target.textContent !== '') {
+        console.log("빈칸이 아닙니다.");
+        return;
+    }
+    console.log('빈칸입니다.');
+    event.target.textContent = turn;
+    const hasWinner = checkWinner(event.target);
+
+    if (hasWinner) {
+        $result.textContent = `${turn}님의 승리`;
+        $table.removeEventListener('click', callback);
+        return;
+    }
+
+    const draw = rows.flat().every((cell) => cell.textContent);
+    if (draw) {
+        $result.textContent = '무승부';
+        return;
+    }
+
+    turn = 'X'; // 컴퓨터 차례로 변경
+    delayComputerMove(); // 일정 시간 후에 컴퓨터가 'X'를 선택
+};
+
+
+        for (let i = 1; i <= 3; i++) {
+            const $tr = document.createElement('tr');
+            const cells = [];
+            for (let j = 1; j <= 3; j++) {
+                const $td = document.createElement('td');
+                cells.push($td);
+                $tr.appendChild($td);
+            }
+
+            rows.push(cells);
+            $table.appendChild($tr);
+            $table.addEventListener('click', callback);
+        }
+
+        body.appendChild($table);
+        body.appendChild($result);
+    </script>
+
+    
+</body>
+</html>

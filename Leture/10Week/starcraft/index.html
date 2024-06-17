@@ -7,25 +7,33 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body>
+
   <h1 id='hp'>HP: 3</h1>
+
     <div class='background'>
         <img id='drone' src="images/drone.png" alt="drone">
         <img id='spit' src="images/spit.png" alt="spit">
         <img id='bunker' src="images/bunker.png" alt="bunker">
     </div>
+
   <script>
     var hp = 3;
+
+    // 드론을 클릭했을 경우
     $("#drone").click(function() {
-        $("#spit").fadeIn();
-        $("#spit").animate({left: '+=250'});
+
+        $("#spit").fadeIn(); // 나타나기
+        $("#spit").animate({left: '+=250'}); // 왼쪽으로 +250만큼 가기
+
         $("#spit").fadeOut(function () {
-            hp -= 1;
+            hp -= 1; // hp -
             $("#hp").text("HP : " + hp);
 
             if(hp == 0) {
                 $('#bunker').fadeOut();
             }
         });
+        
         $('#spit').css({left : '150px'}); // 초기 위치
     })
   </script>

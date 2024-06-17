@@ -23,6 +23,7 @@
     <div id="score"></div>
 
     <script>
+
         const $computer = document.querySelector('#computer');
         const $score = document.querySelector("#score");
         const $rock = document.querySelector("#rock");
@@ -31,6 +32,7 @@
         
         const img_url = './rsp.png';
 
+        // 백그라운드 설정
         $computer.style.background = `url(${img_url}) 0 0`;
         $computer.style.backgroundSize = 'auto 200px';
 
@@ -53,8 +55,10 @@
         };
 
         const calculateResult = (userChoice) => {
+
             const myScore = scoreTable[userChoice];
             const diff = myScore - scoreTable[computerChoice];
+
             let message;
 
             if (diff === 0) {
@@ -71,10 +75,13 @@
 
             if (roundsPlayed < 5) {
                 $score.textContent = `${message} ${userScore} : ${computerScore}`;
+
+                // 시간 설정
                 setTimeout(() => {
                     intervalId = setInterval(changeComputerHand, 50);
                     clickable = true;
                 }, 1000);
+
             } else {
                 if (userScore > computerScore) {
                     $score.textContent = `사용자의 승리 ${userScore} : ${computerScore}`;
@@ -90,9 +97,9 @@
         let clickable = true;
 
         const scoreTable = {
+            paper: 0,
             scissors: 1,
             rock: 2,
-            paper: 0,
         };
 
         const clickButton = (event) => {
